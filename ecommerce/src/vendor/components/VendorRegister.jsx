@@ -34,7 +34,7 @@ const VendorRegister = () => {
       const res = await axios.post("/vendors/register", formData);
       localStorage.setItem("vendorToken", res.data.token);
       setMessage("Registration successful!");
-      navigate("/vendor");
+      navigate("/vendor-login");
     } catch (err) {
       setMessage(err.response?.data?.message || "Registration failed");
     }

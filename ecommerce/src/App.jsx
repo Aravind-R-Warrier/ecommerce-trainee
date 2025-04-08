@@ -11,33 +11,54 @@ import CheckoutForm from './Admin/components/checkOutForm'
 import VendorProductManager from './vendor/components/VendorProductManager'
 import VendorLogin from './vendor/components/VendorLogin'
 import VendorRegister from './vendor/components/VendorRegister'
-
+import Home from './client/Home'
+import VendorDashboard from './vendor/components/VendorDashboard'
+import VendorLayout from './vendor/components/VendorLayout'
+import VendorOrderManagement from './vendor/components/VendorOrderManagement'
+import ProductPage from './client/ProductPage'
+import CartPage from './client/CartPage'
 function App() {
 
   return (
     <>
-     <BrowserRouter>
-     <Routes>
-     <Route path='login' element={<Login/>}/>
-      <Route path='/' element={<LayOut/>}>
-<Route path='users' element={<Users/>}/>
-<Route path='layout' element={<LayOut/>}/>
-<Route path='dashboard' element={<Dashboard/>}/>
-<Route path='coupons' element={<AdminCoupons/>}/>
-<Route path='checkout' element={<CheckoutForm/>}/>
-<Route path='/' element={<Dashboard/>}/>
-<Route path='products' element={<Products/>}/>
+      <BrowserRouter>
+        <Routes>
+          <Route path='admin-login' element={<Login />} />
 
-      </Route>
+          <Route path='admin' element={<LayOut />}>
+          <Route index  element={<Dashboard />} />
+          <Route index path='dashboard' element={<Dashboard />} />
+            <Route path='admin-users' element={<Users />} />
+            <Route path='admin-coupons' element={<AdminCoupons />} />
+            {/* <Route path='/' element={<Dashboard />} /> */}
+            <Route path='admin-products' element={<Products />} />
+          </Route>
 
-      {/* vendor */}
-<Route path='vendor' element={<VendorProductManager/>}/>
-<Route path='vendor-login' element={<VendorLogin/>}/>
-<Route path='vendor-register' element={<VendorRegister/>}/>
-     </Routes>
-     </BrowserRouter>
+          {/* vendor */}
+          <Route path='vendor' element={<VendorLayout />}>
+            <Route index  element={<VendorDashboard />} />
+            <Route index path='vendor-dashboard' element={<VendorDashboard />} />
+            <Route path='vendor-product' element={<VendorProductManager />} />
+            <Route path='vendor-order' element={<VendorOrderManagement />} />
+            <Route path='vendor-login' element={<VendorLogin />} />
+            <Route path='vendor-register' element={<VendorRegister />} />
+          </Route>
+
+          {/* user-client */}
+         
+                <Route path="/" element={<Home />} />
+                <Route path='checkout' element={<CheckoutForm />} />
+                <Route path='cart' element={<CartPage />} />
+                <Route path="/product/:id" element={<ProductPage />} />
+          
+
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
 
 export default App
+
+
+

@@ -96,13 +96,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const navArr = [
-  { link: 'dashboard', component: 'Dashboard', icon: <DashboardIcon /> },
-  { link: 'admin-users', component: 'Users', icon: <GroupIcon /> },
-  { link: 'admin-products', component: 'Products', icon: <LocalGroceryStoreIcon /> },
-  { link: 'admin-coupons', component: 'Coupon', icon: <RedeemIcon /> },
+  { link: 'vendor-dashboard', component: 'Dashboard', icon: <DashboardIcon /> },
+  { link: 'vendor-login', component: 'Users', icon: <GroupIcon /> },
+  { link: 'vendor-product', component: 'Products', icon: <LocalGroceryStoreIcon /> },
+  { link: 'vendor-order', component: 'Order Management', icon: <RedeemIcon /> },
 ];
 
-export default function LayOut() {
+export default function VendorLayout() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -114,8 +114,9 @@ export default function LayOut() {
   const handleLogout = () => {
     // TODO: Implement logout functionality
     console.log("User logged out");
-    navigate("/admin-login");
+    navigate("/");
   };
+  
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -126,7 +127,7 @@ export default function LayOut() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Admin Dashboard
+            Vendor Dashboard
           </Typography>
         </Toolbar>
       </AppBar>

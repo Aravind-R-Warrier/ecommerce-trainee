@@ -3,6 +3,7 @@ import cors from "cors";
 import productRoutes from "./routes/adminRoutes/productRoutes.js";
 import couponRoutes from "./routes/adminRoutes/couponRoutes.js"
 import vendorRoutes from "./routes/vendorRoutes/vendorRoutes.js";
+import cartRoutes from "./routes/cartRoutes/cartRoutes.js"
 import connectDb from "./db/database.js";
 import dotenv from "dotenv";
 
@@ -26,7 +27,7 @@ app.use("/uploads", express.static("uploads")); // Serve images
 // Routes admin
 app.use("/api/products", productRoutes);
 app.use("/api/coupons", couponRoutes);
-
+app.use('/api/cart', cartRoutes);
 // routes vendor
 app.use("/api/vendors", vendorRoutes);
 

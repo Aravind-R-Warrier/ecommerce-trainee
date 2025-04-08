@@ -1,105 +1,151 @@
-import React, { useState } from "react";
-import { Container, Grid, Card, CardContent, TextField, FormControlLabel, Checkbox, Button, Typography, Alert } from "@mui/material";
+import React, { useState } from 'react';
+import {
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  Divider,
+} from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const CheckoutForm = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-    cardName: "",
-    cardNumber: "",
-    expMonth: "",
-    expYear: "",
-    cvv: "",
-    sameAsBilling: true,
+const Checkout = () => {
+  const { state } = useLocation(); // Get product data passed via Order Now
+  const navigate = useNavigate();
+
+  const product = state?.product;
+
+  const [address, setAddress] = useState({
+    fullName: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    phone: '',
   });
 
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const validate = () => {
+    const newErrors = {};
+    Object.entries(address).forEach(([key, value]) => {
+      if (!value.trim()) {
+        newErrors[key] = 'Required';
+      }
+    });
 
-  const validateForm = () => {
-    let newErrors = {};
-    if (!formData.fullName) newErrors.fullName = "Full Name is required";
-    if (!formData.email.includes("@")) newErrors.email = "Invalid email";
-    if (!formData.address) newErrors.address = "Address is required";
-    if (!formData.city) newErrors.city = "City is required";
-    if (!formData.state) newErrors.state = "State is required";
-    if (!formData.zip.match(/^\d{5}$/)) newErrors.zip = "Invalid Zip Code";
-    if (!formData.cardNumber.match(/^\d{16}$/)) newErrors.cardNumber = "Invalid Card Number";
-    if (!formData.cvv.match(/^\d{3,4}$/)) newErrors.cvv = "Invalid CVV";
+    if (address.phone && !/^[0-9]{10}$/.test(address.phone)) {
+      newErrors.phone = 'Invalid phone number';
+    }
+
+    if (address.zip && !/^[0-9]{5,6}$/.test(address.zip)) {
+      newErrors.zip = 'Invalid ZIP code';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCheckout = () => {
-    if (validateForm()) {
-      alert("Checkout Successful!");
-    }
+  const handleChange = (e) => {
+    setAddress({ ...address, [e.target.name]: e.target.value });
   };
 
-  return (
-    <Container >
-      <Grid container spacing={3} sx={{display:'flex',alignItems:'center'}}>
-        <Grid item xs={12} md={8}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6">Billing Address</Typography>
-              <TextField fullWidth margin="normal" label="Full Name" name="fullName" value={formData.fullName} onChange={handleChange} error={!!errors.fullName} helperText={errors.fullName} />
-              <TextField fullWidth margin="normal" label="Email" name="email" value={formData.email} onChange={handleChange} error={!!errors.email} helperText={errors.email} />
-              <TextField fullWidth margin="normal" label="Address" name="address" value={formData.address} onChange={handleChange} error={!!errors.address} helperText={errors.address} />
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField fullWidth label="City" name="city" value={formData.city} onChange={handleChange} error={!!errors.city} helperText={errors.city} />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField fullWidth label="State" name="state" value={formData.state} onChange={handleChange} error={!!errors.state} helperText={errors.state} />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField fullWidth label="Zip" name="zip" value={formData.zip} onChange={handleChange} error={!!errors.zip} helperText={errors.zip} />
-                </Grid>
-              </Grid>
-              <FormControlLabel control={<Checkbox checked={formData.sameAsBilling} onChange={() => setFormData({ ...formData, sameAsBilling: !formData.sameAsBilling })} />} label="Shipping address same as billing" />
+  const handlePlaceOrder = () => {
+    if (!validate()) return;
 
-              <Typography variant="h6" sx={{ mt: 3 }}>Payment</Typography>
-              <TextField fullWidth margin="normal" label="Name on Card" name="cardName" value={formData.cardName} onChange={handleChange} />
-              <TextField fullWidth margin="normal" label="Credit Card Number" name="cardNumber" value={formData.cardNumber} onChange={handleChange} error={!!errors.cardNumber} helperText={errors.cardNumber} />
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField fullWidth label="Exp Month" name="expMonth" value={formData.expMonth} onChange={handleChange} />
+    // Mock placing order
+    alert('Order placed successfully!');
+    navigate('/');
+  };
+
+  if (!product) {
+    return <Typography p={4}>No product found. Please select a product to order.</Typography>;
+  }
+
+  return (
+    <Box p={4}>
+      <Grid container spacing={4}>
+        {/* Address Form */}
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} sx={{ p: 3 }}>
+            <Typography variant="h5" gutterBottom>
+              Shipping Address
+            </Typography>
+            <Grid container spacing={2}>
+              {[
+                { label: 'Full Name', name: 'fullName' },
+                { label: 'Street Address', name: 'street' },
+                { label: 'City', name: 'city' },
+                { label: 'State', name: 'state' },
+                { label: 'ZIP Code', name: 'zip' },
+                { label: 'Phone Number', name: 'phone' },
+              ].map((field) => (
+                <Grid item xs={12} sm={field.name === 'phone' ? 12 : 6} key={field.name}>
+                  <TextField
+                    fullWidth
+                    label={field.label}
+                    name={field.name}
+                    value={address[field.name]}
+                    onChange={handleChange}
+                    error={Boolean(errors[field.name])}
+                    helperText={errors[field.name]}
+                  />
                 </Grid>
-                <Grid item xs={3}>
-                  <TextField fullWidth label="Exp Year" name="expYear" value={formData.expYear} onChange={handleChange} />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField fullWidth label="CVV" name="cvv" value={formData.cvv} onChange={handleChange} error={!!errors.cvv} helperText={errors.cvv} />
-                </Grid>
-              </Grid>
-              <Button variant="contained" color="primary" fullWidth sx={{ mt: 3 }} onClick={handleCheckout}>Continue to Checkout</Button>
-            </CardContent>
-          </Card>
+              ))}
+            </Grid>
+          </Paper>
         </Grid>
 
-        <Grid item xs={12} m={12} md={4}>
-          <Card>
-            <CardContent sx={{display:'flex',justifyContent:'center',flexDirection:'column',width:'200px'}}>
-              <Typography variant="h5">Cart 🛒</Typography>
-              <Typography variant="h6">Item 1 - $15</Typography>
-              <Typography variant="h6">Item 2 - $5</Typography>
-              <Typography variant="h6">Item 3 - $8</Typography>
-              <Typography variant="h6">Item 4 - $2</Typography>
-              <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>Total: $30</Typography>
-            </CardContent>
-          </Card>
+        {/* Order Summary */}
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} sx={{ p: 3 }}>
+            <Typography variant="h5" gutterBottom>
+              Order Summary
+            </Typography>
+            <Divider sx={{ my: 2 }} />
+
+            <Box display="flex" gap={2} alignItems="center">
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                style={{ width: 80, height: 80, objectFit: 'contain' }}
+              />
+              <Box>
+                <Typography variant="subtitle1">{product.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {product.category}
+                </Typography>
+                <Typography variant="h6">₹{product.price}</Typography>
+              </Box>
+            </Box>
+
+            <Divider sx={{ my: 2 }} />
+
+            <Typography variant="body1" gutterBottom>
+              Subtotal: ₹{product.price}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Shipping: ₹0 (Free)
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              Total: ₹{product.price}
+            </Typography>
+
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+              onClick={handlePlaceOrder}
+            >
+              Place Order
+            </Button>
+          </Paper>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 };
 
-export default CheckoutForm;
+export default Checkout;

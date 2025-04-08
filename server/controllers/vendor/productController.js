@@ -24,9 +24,7 @@ export const registerVendor = async (req, res) => {
       businessName,
     });
 
-    const token = jwt.sign({ id: newVendor._id, role: "vendor" }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    
 
     res.status(201).json({
       success: true,
@@ -37,7 +35,6 @@ export const registerVendor = async (req, res) => {
         email: newVendor.email,
         role: "vendor",
       },
-      token,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: "Registration failed", error: error.message });
