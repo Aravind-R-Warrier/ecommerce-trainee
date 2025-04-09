@@ -44,6 +44,11 @@ const Home = () => {
             product.category.toLowerCase().includes(searchTerm.toLowerCase());
         return inCategory && inPrice && inSearch;
     });
+    const handleLogout=()=>{
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        navigate('/login');
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -66,11 +71,12 @@ const Home = () => {
                         </IconButton>
                     </Box>
                     {/* Cart Badge Icon */}
-                    <IconButton color="inherit" onClick={() => navigate('/cart')} sx={{ ml: 2 }}>
+                    <IconButton color="inherit" onClick={() => navigate('/cart')} sx={{ ml: 2,mr:2 }}>
                         <Badge badgeContent={cartCount} color="error" showZero>
                             <ShoppingCartIcon />
                         </Badge>
                     </IconButton>
+                    <Button onClick={()=>handleLogout()} sx={{color:'white',marginLeft:'3px',border:'1px solid grey'}}>LogOut</Button>
                 </Toolbar>
             </AppBar>
 
@@ -144,13 +150,13 @@ const Home = () => {
                                     objectFit: 'contain',
                                     flexWrap: 'wrap'
                                 }}
-                                onClick={() => navigate(`/product/${product._id}`)}
                             >
                                 <CardMedia
                                     component="img"
                                     image={product.images?.[0]}
                                     alt={product.name}
                                     sx={{ height: 150, objectFit: 'contain', p: 1 }}
+                                    onClick={() => navigate(`/product/${product._id}`)}
                                 />
                                 <CardContent sx={{ flexGrow: 1 }}>
                                     <Typography gutterBottom variant="h6" noWrap>

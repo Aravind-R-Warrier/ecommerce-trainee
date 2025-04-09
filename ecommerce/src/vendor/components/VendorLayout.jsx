@@ -97,9 +97,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const navArr = [
   { link: 'vendor-dashboard', component: 'Dashboard', icon: <DashboardIcon /> },
-  { link: 'vendor-login', component: 'Users', icon: <GroupIcon /> },
+  { link: 'vendor-order', component: 'Users', icon: <GroupIcon /> },
   { link: 'vendor-product', component: 'Products', icon: <LocalGroceryStoreIcon /> },
-  { link: 'vendor-order', component: 'Order Management', icon: <RedeemIcon /> },
 ];
 
 export default function VendorLayout() {
@@ -112,9 +111,9 @@ export default function VendorLayout() {
   };
 
   const handleLogout = () => {
-    // TODO: Implement logout functionality
-    console.log("User logged out");
-    navigate("/");
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/login');
   };
   
 

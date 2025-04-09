@@ -13,7 +13,8 @@ const VendorProductManager = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("vendorToken") // Vendor token
+  const token = localStorage.getItem("token"); // ✅ Fix: use correct key
+  // Vendor token
 
   const fetchProducts = async () => {
     try {

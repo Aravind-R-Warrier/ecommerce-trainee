@@ -4,6 +4,7 @@ import productRoutes from "./routes/adminRoutes/productRoutes.js";
 import couponRoutes from "./routes/adminRoutes/couponRoutes.js"
 import vendorRoutes from "./routes/vendorRoutes/vendorRoutes.js";
 import cartRoutes from "./routes/cartRoutes/cartRoutes.js"
+import userRoutes from "./routes/user/userRoutes.js"
 import connectDb from "./db/database.js";
 import dotenv from "dotenv";
 
@@ -28,6 +29,7 @@ app.use("/uploads", express.static("uploads")); // Serve images
 app.use("/api/products", productRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/users', userRoutes);
 // routes vendor
 app.use("/api/vendors", vendorRoutes);
 

@@ -2,7 +2,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Dashboard from './Admin/components/Dashboard'
-import Login from './Admin/components/Login'
+import Login from './Admin/components/AdminLogin'
 import Products from './Admin/components/Products'
 import Users from './Admin/components/Users'
 import LayOut from './Admin/components/LayOut'
@@ -17,13 +17,19 @@ import VendorLayout from './vendor/components/VendorLayout'
 import VendorOrderManagement from './vendor/components/VendorOrderManagement'
 import ProductPage from './client/ProductPage'
 import CartPage from './client/CartPage'
+import Register from './Auth/Register'
+import AdminLogin from './Admin/components/AdminLogin'
+import LoginForm from './Auth/LoginForm'
 function App() {
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='admin-login' element={<Login />} />
+          <Route path='admin-login' element={<AdminLogin />} />
+          <Route path='login' element={<LoginForm/>} />
+            <Route path='register' element={<Register />} />
+
 
           <Route path='admin' element={<LayOut />}>
           <Route index  element={<Dashboard />} />
@@ -40,8 +46,6 @@ function App() {
             <Route index path='vendor-dashboard' element={<VendorDashboard />} />
             <Route path='vendor-product' element={<VendorProductManager />} />
             <Route path='vendor-order' element={<VendorOrderManagement />} />
-            <Route path='vendor-login' element={<VendorLogin />} />
-            <Route path='vendor-register' element={<VendorRegister />} />
           </Route>
 
           {/* user-client */}
